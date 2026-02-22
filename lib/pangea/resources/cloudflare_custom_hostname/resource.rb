@@ -89,7 +89,8 @@ module Pangea
           # SSL configuration
           if hostname_attrs.ssl
             ssl do
-              method hostname_attrs.ssl.method if hostname_attrs.ssl.method
+              # method is a Kernel method, must use hash access and method_missing
+              method_missing(:method, hostname_attrs.ssl[:method]) if hostname_attrs.ssl[:method]
               type hostname_attrs.ssl.type if hostname_attrs.ssl.type
               certificate_authority hostname_attrs.ssl.certificate_authority if hostname_attrs.ssl.certificate_authority
               bundle_method hostname_attrs.ssl.bundle_method if hostname_attrs.ssl.bundle_method

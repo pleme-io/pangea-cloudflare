@@ -10,7 +10,8 @@ module Pangea::Resources
       attrs = Cloudflare::Types::ApiShieldOperationAttributes.new(attributes)
       resource(:cloudflare_api_shield_operation, name) do
         zone_id attrs.zone_id
-        method attrs.method
+        # method is a Kernel method, must use hash access and method_missing
+        method_missing(:method, attrs[:method])
         host attrs.host
         endpoint attrs.endpoint
       end

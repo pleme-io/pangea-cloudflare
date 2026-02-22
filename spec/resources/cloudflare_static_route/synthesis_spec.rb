@@ -249,7 +249,7 @@ RSpec.describe 'cloudflare_static_route synthesis' do
           nexthop: "10.0.0.1",
           priority: 100
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'validates nexthop IP format' do
@@ -260,7 +260,7 @@ RSpec.describe 'cloudflare_static_route synthesis' do
           nexthop: "invalid-ip",
           priority: 100
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'validates weight range' do
@@ -272,7 +272,7 @@ RSpec.describe 'cloudflare_static_route synthesis' do
           priority: 100,
           weight: 300  # Too high
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
   end
 

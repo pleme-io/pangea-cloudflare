@@ -23,6 +23,8 @@ end
 
 begin
   require 'pangea-cloudflare'
+  # Alias for specs that reference Cloudflare:: directly
+  Cloudflare = Pangea::Resources::Cloudflare unless defined?(Cloudflare)
 rescue LoadError => e
   puts "Warning: Could not load pangea-cloudflare: #{e.message}"
 end

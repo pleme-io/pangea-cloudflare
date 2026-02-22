@@ -244,7 +244,7 @@ RSpec.describe 'cloudflare_waiting_room synthesis' do
           new_users_per_minute: 100,  # Too low
           total_active_users: 300
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'rejects invalid queueing_method' do
@@ -257,7 +257,7 @@ RSpec.describe 'cloudflare_waiting_room synthesis' do
           total_active_users: 300,
           queueing_method: "invalid"
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
   end
 end

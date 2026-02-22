@@ -365,7 +365,7 @@ RSpec.describe 'cloudflare_custom_hostname synthesis' do
           zone_id: zone_id,
           hostname: "invalid_hostname!"
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'rejects invalid SSL method' do
@@ -375,7 +375,7 @@ RSpec.describe 'cloudflare_custom_hostname synthesis' do
           hostname: "app.customer.com",
           ssl: { method: "invalid" }
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'rejects invalid certificate authority' do
@@ -388,7 +388,7 @@ RSpec.describe 'cloudflare_custom_hostname synthesis' do
             certificate_authority: "invalid_ca"
           }
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'rejects invalid min_tls_version' do
@@ -401,7 +401,7 @@ RSpec.describe 'cloudflare_custom_hostname synthesis' do
             settings: { min_tls_version: "0.9" }
           }
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
   end
 

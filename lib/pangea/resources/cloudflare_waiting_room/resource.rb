@@ -84,7 +84,7 @@ module Pangea
           queueing_method wr_attrs.queueing_method if wr_attrs.queueing_method
           description wr_attrs.description if wr_attrs.description
           session_duration wr_attrs.session_duration if wr_attrs.session_duration
-          disable_session_renewal wr_attrs.disable_session_renewal if wr_attrs.disable_session_renewal
+          disable_session_renewal wr_attrs.disable_session_renewal unless wr_attrs.disable_session_renewal.nil?
           suspended wr_attrs.suspended if wr_attrs.suspended
           custom_page_html wr_attrs.custom_page_html if wr_attrs.custom_page_html
           default_template_language wr_attrs.default_template_language if wr_attrs.default_template_language

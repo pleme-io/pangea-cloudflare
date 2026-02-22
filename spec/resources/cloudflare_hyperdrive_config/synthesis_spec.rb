@@ -416,7 +416,7 @@ RSpec.describe 'cloudflare_hyperdrive_config synthesis' do
             scheme: "mongodb"
           }
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'rejects invalid port' do
@@ -433,7 +433,7 @@ RSpec.describe 'cloudflare_hyperdrive_config synthesis' do
             port: 99999
           }
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'rejects invalid sslmode' do
@@ -452,7 +452,7 @@ RSpec.describe 'cloudflare_hyperdrive_config synthesis' do
             sslmode: "invalid"
           }
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
 
     it 'requires positive max_age' do
@@ -471,7 +471,7 @@ RSpec.describe 'cloudflare_hyperdrive_config synthesis' do
             max_age: -1
           }
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
   end
 

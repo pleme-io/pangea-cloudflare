@@ -105,7 +105,8 @@ module Pangea
           description hc_attrs.description if hc_attrs.description
           path hc_attrs.path if hc_attrs.path
           port hc_attrs.port if hc_attrs.port
-          method hc_attrs.method if hc_attrs.method
+          # method is a Kernel method, must use hash access and method_missing
+          method_missing(:method, hc_attrs[:method]) if hc_attrs[:method]
           expected_codes hc_attrs.expected_codes if hc_attrs.expected_codes
           expected_body hc_attrs.expected_body if hc_attrs.expected_body
           follow_redirects hc_attrs.follow_redirects if hc_attrs.follow_redirects

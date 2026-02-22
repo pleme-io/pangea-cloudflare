@@ -104,7 +104,7 @@ RSpec.describe 'cloudflare_tiered_cache synthesis' do
           zone_id: zone_id,
           value: "invalid"
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
   end
 end

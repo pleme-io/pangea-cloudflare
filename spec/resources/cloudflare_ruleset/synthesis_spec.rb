@@ -334,7 +334,7 @@ RSpec.describe 'cloudflare_ruleset synthesis' do
           phase: "http_request_firewall_custom",
           rules: []
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
   end
 

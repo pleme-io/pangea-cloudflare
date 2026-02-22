@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require_relative '../core'
+require 'pangea/resources/types/core'
 
 module Pangea
   module Resources

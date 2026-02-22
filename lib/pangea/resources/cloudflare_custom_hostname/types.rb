@@ -51,7 +51,7 @@ module Pangea
           # @!attribute hostname
           #   @return [String] The custom hostname (e.g., "app.customer.com")
           attribute :hostname, Dry::Types['strict.string'].constrained(
-            format: /\A[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\z/i
+            format: /\A(\*\.)?[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\z/i
           )
 
           # @!attribute ssl

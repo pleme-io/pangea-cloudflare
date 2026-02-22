@@ -223,7 +223,7 @@ RSpec.describe 'cloudflare_waiting_room_event synthesis' do
           event_start_time: "2025-11-15 12:00:00",  # Invalid format
           event_end_time: "2025-11-15T14:00:00Z"
         )
-      }.to raise_error(Dry::Types::ConstraintError)
+      }.to raise_error(Dry::Struct::Error)
     end
   end
 
