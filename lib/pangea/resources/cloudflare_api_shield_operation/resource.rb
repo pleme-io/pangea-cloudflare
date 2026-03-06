@@ -6,21 +6,12 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareApiShieldOperation
-    def cloudflare_api_shield_operation(name, attributes = {})
-      attrs = Cloudflare::Types::ApiShieldOperationAttributes.new(attributes)
-      resource(:cloudflare_api_shield_operation, name) do
-        zone_id attrs.zone_id
-        # method is a Kernel method, must use hash access and method_missing
-        method_missing(:method, attrs[:method])
-        host attrs.host
-        endpoint attrs.endpoint
-      end
-      ResourceReference.new(
-        type: 'cloudflare_api_shield_operation',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_api_shield_operation.#{name}.id}" }
-      )
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_api_shield_operation,
+      attributes_class: Cloudflare::Types::ApiShieldOperationAttributes,
+      map: [:zone_id, :host, :endpoint] do |r, attrs|
+      r.method_missing(:method, attrs[:method])
     end
   end
   module Cloudflare

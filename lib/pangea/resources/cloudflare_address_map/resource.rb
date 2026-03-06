@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareAddressMap
-    def cloudflare_address_map(name, attributes = {})
-      attrs = Cloudflare::Types::AddressMapAttributes.new(attributes)
-      resource(:cloudflare_address_map, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_address_map',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_address_map.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_address_map,
+      attributes_class: Cloudflare::Types::AddressMapAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareAddressMap

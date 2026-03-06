@@ -6,26 +6,12 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareNotificationPolicy
-    def cloudflare_notification_policy(name, attributes = {})
-      attrs = Cloudflare::Types::NotificationPolicyAttributes.new(attributes)
-      resource(:cloudflare_notification_policy, name) do
-        account_id attrs.account_id
-        name attrs.name
-        alert_type attrs.alert_type
-        enabled attrs.enabled
-        description attrs.description if attrs.description
-        email_integration attrs.email_integration if attrs.email_integration
-        webhooks_integration attrs.webhooks_integration if attrs.webhooks_integration
-        pagerduty_integration attrs.pagerduty_integration if attrs.pagerduty_integration
-        filters attrs.filters if attrs.filters
-      end
-      ResourceReference.new(
-        type: 'cloudflare_notification_policy',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_notification_policy.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_notification_policy,
+      attributes_class: Cloudflare::Types::NotificationPolicyAttributes,
+      map: [:account_id, :name, :alert_type, :enabled],
+      map_present: [:description, :email_integration, :webhooks_integration, :pagerduty_integration, :filters]
   end
   module Cloudflare
     include CloudflareNotificationPolicy

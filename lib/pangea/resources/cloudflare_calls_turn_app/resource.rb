@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareCallsTurnApp
-    def cloudflare_calls_turn_app(name, attributes = {})
-      attrs = Cloudflare::Types::CallsTurnAppAttributes.new(attributes)
-      resource(:cloudflare_calls_turn_app, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_calls_turn_app',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_calls_turn_app.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_calls_turn_app,
+      attributes_class: Cloudflare::Types::CallsTurnAppAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareCallsTurnApp

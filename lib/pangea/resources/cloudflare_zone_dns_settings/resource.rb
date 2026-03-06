@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZoneDnsSettings
-    def cloudflare_zone_dns_settings(name, attributes = {})
-      attrs = Cloudflare::Types::ZoneDnsSettingsAttributes.new(attributes)
-      resource(:cloudflare_zone_dns_settings, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zone_dns_settings',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zone_dns_settings.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zone_dns_settings,
+      attributes_class: Cloudflare::Types::ZoneDnsSettingsAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareZoneDnsSettings

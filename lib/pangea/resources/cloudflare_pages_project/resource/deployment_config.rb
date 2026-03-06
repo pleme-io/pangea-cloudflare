@@ -5,7 +5,7 @@
 module Pangea
   module Resources
     module CloudflarePagesProject
-      private
+      module_function
 
       def synthesize_deployment_config(context, config)
         context.instance_eval do

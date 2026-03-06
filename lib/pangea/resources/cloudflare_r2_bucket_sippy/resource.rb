@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareR2BucketSippy
-    def cloudflare_r2_bucket_sippy(name, attributes = {})
-      attrs = Cloudflare::Types::R2BucketSippyAttributes.new(attributes)
-      resource(:cloudflare_r2_bucket_sippy, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_r2_bucket_sippy',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_r2_bucket_sippy.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_r2_bucket_sippy,
+      attributes_class: Cloudflare::Types::R2BucketSippyAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareR2BucketSippy

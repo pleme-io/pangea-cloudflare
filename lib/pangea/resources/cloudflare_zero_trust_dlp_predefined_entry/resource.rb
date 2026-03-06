@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustDlpPredefinedEntry
-    def cloudflare_zero_trust_dlp_predefined_entry(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDlpPredefinedEntryAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_dlp_predefined_entry, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_dlp_predefined_entry',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_dlp_predefined_entry.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_dlp_predefined_entry,
+      attributes_class: Cloudflare::Types::ZeroTrustDlpPredefinedEntryAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustDlpPredefinedEntry

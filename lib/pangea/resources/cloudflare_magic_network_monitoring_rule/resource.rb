@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareMagicNetworkMonitoringRule
-    def cloudflare_magic_network_monitoring_rule(name, attributes = {})
-      attrs = Cloudflare::Types::MagicNetworkMonitoringRuleAttributes.new(attributes)
-      resource(:cloudflare_magic_network_monitoring_rule, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_magic_network_monitoring_rule',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_magic_network_monitoring_rule.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_magic_network_monitoring_rule,
+      attributes_class: Cloudflare::Types::MagicNetworkMonitoringRuleAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareMagicNetworkMonitoringRule

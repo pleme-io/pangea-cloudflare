@@ -6,25 +6,13 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareWebAnalyticsSite
-    def cloudflare_web_analytics_site(name, attributes = {})
-      attrs = Cloudflare::Types::WebAnalyticsSiteAttributes.new(attributes)
-      resource(:cloudflare_web_analytics_site, name) do
-        account_id attrs.account_id
-        auto_install attrs.auto_install
-        host attrs.host if attrs.host
-        zone_tag attrs.zone_tag if attrs.zone_tag
-      end
-      ResourceReference.new(
-        type: 'cloudflare_web_analytics_site',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: {
-          id: "${cloudflare_web_analytics_site.#{name}.id}",
-          site_tag: "${cloudflare_web_analytics_site.#{name}.site_tag}",
-          site_token: "${cloudflare_web_analytics_site.#{name}.site_token}"
-        }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_web_analytics_site,
+      attributes_class: Cloudflare::Types::WebAnalyticsSiteAttributes,
+      outputs: { id: :id, site_tag: :site_tag, site_token: :site_token },
+      map: [:account_id, :auto_install],
+      map_present: [:host, :zone_tag]
   end
   module Cloudflare
     include CloudflareWebAnalyticsSite

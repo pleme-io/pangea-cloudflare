@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustDlpCustomProfile
-    def cloudflare_zero_trust_dlp_custom_profile(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDlpCustomProfileAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_dlp_custom_profile, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_dlp_custom_profile',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_dlp_custom_profile.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_dlp_custom_profile,
+      attributes_class: Cloudflare::Types::ZeroTrustDlpCustomProfileAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustDlpCustomProfile

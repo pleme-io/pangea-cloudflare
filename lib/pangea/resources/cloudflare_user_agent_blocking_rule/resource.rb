@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareUserAgentBlockingRule
-    def cloudflare_user_agent_blocking_rule(name, attributes = {})
-      attrs = Cloudflare::Types::UserAgentBlockingRuleAttributes.new(attributes)
-      resource(:cloudflare_user_agent_blocking_rule, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_user_agent_blocking_rule',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_user_agent_blocking_rule.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_user_agent_blocking_rule,
+      attributes_class: Cloudflare::Types::UserAgentBlockingRuleAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareUserAgentBlockingRule

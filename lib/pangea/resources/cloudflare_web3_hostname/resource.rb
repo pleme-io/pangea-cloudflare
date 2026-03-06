@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareWeb3Hostname
-    def cloudflare_web3_hostname(name, attributes = {})
-      attrs = Cloudflare::Types::Web3HostnameAttributes.new(attributes)
-      resource(:cloudflare_web3_hostname, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_web3_hostname',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_web3_hostname.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_web3_hostname,
+      attributes_class: Cloudflare::Types::Web3HostnameAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareWeb3Hostname

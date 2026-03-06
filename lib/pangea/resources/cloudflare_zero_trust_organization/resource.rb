@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustOrganization
-    def cloudflare_zero_trust_organization(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustOrganizationAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_organization, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_organization',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_organization.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_organization,
+      attributes_class: Cloudflare::Types::ZeroTrustOrganizationAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustOrganization

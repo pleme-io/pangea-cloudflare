@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustDevicePostureRule
-    def cloudflare_zero_trust_device_posture_rule(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDevicePostureRuleAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_device_posture_rule, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_device_posture_rule',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_device_posture_rule.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_device_posture_rule,
+      attributes_class: Cloudflare::Types::ZeroTrustDevicePostureRuleAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustDevicePostureRule

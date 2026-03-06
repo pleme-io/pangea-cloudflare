@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareDeviceDefaultProfile
-    def cloudflare_zero_trust_device_default_profile(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDeviceDefaultProfileAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_device_default_profile, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_device_default_profile',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_device_default_profile.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_device_default_profile,
+      attributes_class: Cloudflare::Types::ZeroTrustDeviceDefaultProfileAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareDeviceDefaultProfile

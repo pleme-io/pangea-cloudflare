@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareWorkersScriptSubdomain
-    def cloudflare_workers_script_subdomain(name, attributes = {})
-      attrs = Cloudflare::Types::WorkersScriptSubdomainAttributes.new(attributes)
-      resource(:cloudflare_workers_script_subdomain, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_workers_script_subdomain',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_workers_script_subdomain.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_workers_script_subdomain,
+      attributes_class: Cloudflare::Types::WorkersScriptSubdomainAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareWorkersScriptSubdomain

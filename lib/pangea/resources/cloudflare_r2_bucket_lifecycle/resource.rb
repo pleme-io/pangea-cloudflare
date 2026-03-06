@@ -6,22 +6,14 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareR2BucketLifecycle
-    def cloudflare_r2_bucket_lifecycle(name, attributes = {})
-      attrs = Cloudflare::Types::R2BucketLifecycleAttributes.new(attributes)
-      resource(:cloudflare_r2_bucket_lifecycle, name) do
-        account_id attrs.account_id
-        bucket_name attrs.bucket_name
-        # Lifecycle rules as array (terraform-synthesizer handles array → blocks conversion)
-        if attrs.rules.any?
-          rules attrs.rules.map { |r| r.to_h }
-        end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_r2_bucket_lifecycle,
+      attributes_class: Cloudflare::Types::R2BucketLifecycleAttributes,
+      map: [:account_id, :bucket_name] do |r, attrs|
+      if attrs.rules.any?
+        r.rules attrs.rules.map { |r| r.to_h }
       end
-      ResourceReference.new(
-        type: 'cloudflare_r2_bucket_lifecycle',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_r2_bucket_lifecycle.#{name}.id}" }
-      )
     end
   end
   module Cloudflare

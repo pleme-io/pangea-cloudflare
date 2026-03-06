@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZoneHold
-    def cloudflare_zone_hold(name, attributes = {})
-      attrs = Cloudflare::Types::ZoneHoldAttributes.new(attributes)
-      resource(:cloudflare_zone_hold, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zone_hold',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zone_hold.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zone_hold,
+      attributes_class: Cloudflare::Types::ZoneHoldAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareZoneHold

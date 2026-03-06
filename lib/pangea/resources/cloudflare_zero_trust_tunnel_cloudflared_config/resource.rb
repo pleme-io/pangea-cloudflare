@@ -6,20 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustTunnelCloudflaredConfig
-    def cloudflare_zero_trust_tunnel_cloudflared_config(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustTunnelCloudflaredConfigAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_tunnel_cloudflared_config, name) do
-        account_id attrs.account_id
-        tunnel_id attrs.tunnel_id
-        config attrs.config
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_tunnel_cloudflared_config',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_tunnel_cloudflared_config.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_tunnel_cloudflared_config,
+      attributes_class: Cloudflare::Types::ZeroTrustTunnelCloudflaredConfigAttributes,
+      map: [:account_id, :tunnel_id, :config]
   end
   module Cloudflare
     include CloudflareZeroTrustTunnelCloudflaredConfig

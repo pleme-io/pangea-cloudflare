@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareHostnameTlsSetting
-    def cloudflare_hostname_tls_setting(name, attributes = {})
-      attrs = Cloudflare::Types::HostnameTlsSettingAttributes.new(attributes)
-      resource(:cloudflare_hostname_tls_setting, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_hostname_tls_setting',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_hostname_tls_setting.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_hostname_tls_setting,
+      attributes_class: Cloudflare::Types::HostnameTlsSettingAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareHostnameTlsSetting

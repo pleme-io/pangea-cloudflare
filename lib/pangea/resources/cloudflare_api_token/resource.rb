@@ -6,25 +6,13 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareApiToken
-    def cloudflare_api_token(name, attributes = {})
-      attrs = Cloudflare::Types::ApiTokenAttributes.new(attributes)
-      resource(:cloudflare_api_token, name) do
-        name attrs.name
-        policy attrs.policy
-        condition attrs.condition if attrs.condition
-        expires_on attrs.expires_on if attrs.expires_on
-        not_before attrs.not_before if attrs.not_before
-      end
-      ResourceReference.new(
-        type: 'cloudflare_api_token',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: {
-          id: "${cloudflare_api_token.#{name}.id}",
-          value: "${cloudflare_api_token.#{name}.value}"
-        }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_api_token,
+      attributes_class: Cloudflare::Types::ApiTokenAttributes,
+      outputs: { id: :id, value: :value },
+      map: [:name, :policy],
+      map_present: [:condition, :expires_on, :not_before]
   end
   module Cloudflare
     include CloudflareApiToken

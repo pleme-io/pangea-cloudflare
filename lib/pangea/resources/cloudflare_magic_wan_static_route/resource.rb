@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareMagicWanStaticRoute
-    def cloudflare_magic_wan_static_route(name, attributes = {})
-      attrs = Cloudflare::Types::MagicWanStaticRouteAttributes.new(attributes)
-      resource(:cloudflare_magic_wan_static_route, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_magic_wan_static_route',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_magic_wan_static_route.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_magic_wan_static_route,
+      attributes_class: Cloudflare::Types::MagicWanStaticRouteAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareMagicWanStaticRoute

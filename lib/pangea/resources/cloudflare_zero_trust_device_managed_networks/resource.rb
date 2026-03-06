@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustDeviceManagedNetworks
-    def cloudflare_zero_trust_device_managed_networks(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDeviceManagedNetworksAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_device_managed_networks, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_device_managed_networks',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_device_managed_networks.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_device_managed_networks,
+      attributes_class: Cloudflare::Types::ZeroTrustDeviceManagedNetworksAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustDeviceManagedNetworks

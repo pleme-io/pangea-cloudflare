@@ -6,22 +6,13 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareApiShieldSchema
-    def cloudflare_api_shield_schema(name, attributes = {})
-      attrs = Cloudflare::Types::ApiShieldSchemaAttributes.new(attributes)
-      resource(:cloudflare_api_shield_schema, name) do
-        zone_id attrs.zone_id
-        name attrs.name
-        source attrs.source
-        kind attrs.kind if attrs.kind
-        validation_enabled attrs.validation_enabled if !attrs.validation_enabled.nil?
-      end
-      ResourceReference.new(
-        type: 'cloudflare_api_shield_schema',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_api_shield_schema.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_api_shield_schema,
+      attributes_class: Cloudflare::Types::ApiShieldSchemaAttributes,
+      map: [:zone_id, :name, :source],
+      map_present: [:kind],
+      map_bool: [:validation_enabled]
   end
   module Cloudflare
     include CloudflareApiShieldSchema

@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZoneCacheVariants
-    def cloudflare_zone_cache_variants(name, attributes = {})
-      attrs = Cloudflare::Types::ZoneCacheVariantsAttributes.new(attributes)
-      resource(:cloudflare_zone_cache_variants, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zone_cache_variants',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zone_cache_variants.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zone_cache_variants,
+      attributes_class: Cloudflare::Types::ZoneCacheVariantsAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareZoneCacheVariants

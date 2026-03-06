@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareWorker
-    def cloudflare_worker(name, attributes = {})
-      attrs = Cloudflare::Types::WorkerAttributes.new(attributes)
-      resource(:cloudflare_worker, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_worker',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_worker.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_worker,
+      attributes_class: Cloudflare::Types::WorkerAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareWorker

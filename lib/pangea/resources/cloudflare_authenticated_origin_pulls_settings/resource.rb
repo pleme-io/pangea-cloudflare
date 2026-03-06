@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareAuthenticatedOriginPullsSettings
-    def cloudflare_authenticated_origin_pulls_settings(name, attributes = {})
-      attrs = Cloudflare::Types::AuthenticatedOriginPullsSettingsAttributes.new(attributes)
-      resource(:cloudflare_authenticated_origin_pulls_settings, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_authenticated_origin_pulls_settings',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_authenticated_origin_pulls_settings.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_authenticated_origin_pulls_settings,
+      attributes_class: Cloudflare::Types::AuthenticatedOriginPullsSettingsAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareAuthenticatedOriginPullsSettings

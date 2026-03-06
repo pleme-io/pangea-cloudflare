@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareEmailSecurityTrustedDomains
-    def cloudflare_email_security_trusted_domains(name, attributes = {})
-      attrs = Cloudflare::Types::EmailSecurityTrustedDomainsAttributes.new(attributes)
-      resource(:cloudflare_email_security_trusted_domains, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_email_security_trusted_domains',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_email_security_trusted_domains.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_email_security_trusted_domains,
+      attributes_class: Cloudflare::Types::EmailSecurityTrustedDomainsAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareEmailSecurityTrustedDomains

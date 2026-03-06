@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustRiskScoringIntegration
-    def cloudflare_zero_trust_risk_scoring_integration(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustRiskScoringIntegrationAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_risk_scoring_integration, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_risk_scoring_integration',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_risk_scoring_integration.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_risk_scoring_integration,
+      attributes_class: Cloudflare::Types::ZeroTrustRiskScoringIntegrationAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustRiskScoringIntegration

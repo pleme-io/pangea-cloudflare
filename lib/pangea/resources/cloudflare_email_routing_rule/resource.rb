@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareEmailRoutingRule
-    def cloudflare_email_routing_rule(name, attributes = {})
-      attrs = Cloudflare::Types::EmailRoutingRuleAttributes.new(attributes)
-      resource(:cloudflare_email_routing_rule, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_email_routing_rule',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_email_routing_rule.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_email_routing_rule,
+      attributes_class: Cloudflare::Types::EmailRoutingRuleAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareEmailRoutingRule

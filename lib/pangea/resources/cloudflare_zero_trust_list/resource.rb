@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustList
-    def cloudflare_zero_trust_list(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustListAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_list, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_list',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_list.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_list,
+      attributes_class: Cloudflare::Types::ZeroTrustListAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustList

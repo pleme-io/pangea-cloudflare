@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustTunnelWarpConnector
-    def cloudflare_zero_trust_tunnel_warp_connector(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustTunnelWarpConnectorAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_tunnel_warp_connector, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_tunnel_warp_connector',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_tunnel_warp_connector.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_tunnel_warp_connector,
+      attributes_class: Cloudflare::Types::ZeroTrustTunnelWarpConnectorAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustTunnelWarpConnector

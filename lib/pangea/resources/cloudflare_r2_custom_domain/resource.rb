@@ -6,20 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareR2CustomDomain
-    def cloudflare_r2_custom_domain(name, attributes = {})
-      attrs = Cloudflare::Types::R2CustomDomainAttributes.new(attributes)
-      resource(:cloudflare_r2_custom_domain, name) do
-        account_id attrs.account_id
-        bucket_name attrs.bucket_name
-        domain attrs.domain
-      end
-      ResourceReference.new(
-        type: 'cloudflare_r2_custom_domain',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_r2_custom_domain.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_r2_custom_domain,
+      attributes_class: Cloudflare::Types::R2CustomDomainAttributes,
+      map: [:account_id, :bucket_name, :domain]
   end
   module Cloudflare
     include CloudflareR2CustomDomain

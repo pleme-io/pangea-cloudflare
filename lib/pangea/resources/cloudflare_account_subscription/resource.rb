@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareAccountSubscription
-    def cloudflare_account_subscription(name, attributes = {})
-      attrs = Cloudflare::Types::AccountSubscriptionAttributes.new(attributes)
-      resource(:cloudflare_account_subscription, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_account_subscription',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_account_subscription.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_account_subscription,
+      attributes_class: Cloudflare::Types::AccountSubscriptionAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareAccountSubscription

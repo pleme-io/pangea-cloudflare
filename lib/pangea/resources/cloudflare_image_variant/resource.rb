@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareImageVariant
-    def cloudflare_image_variant(name, attributes = {})
-      attrs = Cloudflare::Types::ImageVariantAttributes.new(attributes)
-      resource(:cloudflare_image_variant, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_image_variant',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_image_variant.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_image_variant,
+      attributes_class: Cloudflare::Types::ImageVariantAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareImageVariant

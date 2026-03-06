@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareCustomHostnameFallbackOrigin
-    def cloudflare_custom_hostname_fallback_origin(name, attributes = {})
-      attrs = Cloudflare::Types::CustomHostnameFallbackOriginAttributes.new(attributes)
-      resource(:cloudflare_custom_hostname_fallback_origin, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_custom_hostname_fallback_origin',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_custom_hostname_fallback_origin.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_custom_hostname_fallback_origin,
+      attributes_class: Cloudflare::Types::CustomHostnameFallbackOriginAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareCustomHostnameFallbackOrigin

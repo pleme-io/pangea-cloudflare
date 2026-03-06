@@ -6,20 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflarePagesDomain
-    def cloudflare_pages_domain(name, attributes = {})
-      attrs = Cloudflare::Types::PagesDomainAttributes.new(attributes)
-      resource(:cloudflare_pages_domain, name) do
-        account_id attrs.account_id
-        project_name attrs.project_name
-        domain attrs.domain
-      end
-      ResourceReference.new(
-        type: 'cloudflare_pages_domain',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_pages_domain.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_pages_domain,
+      attributes_class: Cloudflare::Types::PagesDomainAttributes,
+      map: [:account_id, :project_name, :domain]
   end
   module Cloudflare
     include CloudflarePagesDomain

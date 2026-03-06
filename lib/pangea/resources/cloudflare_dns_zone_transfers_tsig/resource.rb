@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareDnsZoneTransfersTsig
-    def cloudflare_dns_zone_transfers_tsig(name, attributes = {})
-      attrs = Cloudflare::Types::DnsZoneTransfersTsigAttributes.new(attributes)
-      resource(:cloudflare_dns_zone_transfers_tsig, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_dns_zone_transfers_tsig',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_dns_zone_transfers_tsig.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_dns_zone_transfers_tsig,
+      attributes_class: Cloudflare::Types::DnsZoneTransfersTsigAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareDnsZoneTransfersTsig

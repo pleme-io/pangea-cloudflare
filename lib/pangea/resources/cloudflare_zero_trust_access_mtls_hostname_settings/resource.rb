@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustAccessMtlsHostnameSettings
-    def cloudflare_zero_trust_access_mtls_hostname_settings(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustAccessMtlsHostnameSettingsAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_access_mtls_hostname_settings, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_access_mtls_hostname_settings',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_access_mtls_hostname_settings.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_access_mtls_hostname_settings,
+      attributes_class: Cloudflare::Types::ZeroTrustAccessMtlsHostnameSettingsAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustAccessMtlsHostnameSettings

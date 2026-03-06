@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustDlpDataset
-    def cloudflare_zero_trust_dlp_dataset(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDlpDatasetAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_dlp_dataset, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_dlp_dataset',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_dlp_dataset.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_dlp_dataset,
+      attributes_class: Cloudflare::Types::ZeroTrustDlpDatasetAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustDlpDataset

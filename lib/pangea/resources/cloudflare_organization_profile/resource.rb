@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareOrganizationProfile
-    def cloudflare_organization_profile(name, attributes = {})
-      attrs = Cloudflare::Types::OrganizationProfileAttributes.new(attributes)
-      resource(:cloudflare_organization_profile, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_organization_profile',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_organization_profile.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_organization_profile,
+      attributes_class: Cloudflare::Types::OrganizationProfileAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareOrganizationProfile

@@ -6,25 +6,13 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareAuthenticatedOriginPullsCertificate
-    def cloudflare_authenticated_origin_pulls_certificate(name, attributes = {})
-      attrs = Cloudflare::Types::AuthenticatedOriginPullsCertificateAttributes.new(attributes)
-      resource(:cloudflare_authenticated_origin_pulls_certificate, name) do
-        zone_id attrs.zone_id
-        certificate attrs.certificate
-        private_key attrs.private_key
-        type attrs.type if attrs.type
-      end
-      ResourceReference.new(
-        type: 'cloudflare_authenticated_origin_pulls_certificate',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: {
-          id: "${cloudflare_authenticated_origin_pulls_certificate.#{name}.id}",
-          status: "${cloudflare_authenticated_origin_pulls_certificate.#{name}.status}",
-          expires_on: "${cloudflare_authenticated_origin_pulls_certificate.#{name}.expires_on}"
-        }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_authenticated_origin_pulls_certificate,
+      attributes_class: Cloudflare::Types::AuthenticatedOriginPullsCertificateAttributes,
+      outputs: { id: :id, status: :status, expires_on: :expires_on },
+      map: [:zone_id, :certificate, :private_key],
+      map_present: [:type]
   end
   module Cloudflare
     include CloudflareAuthenticatedOriginPullsCertificate

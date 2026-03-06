@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareDnsZoneTransfersOutgoing
-    def cloudflare_dns_zone_transfers_outgoing(name, attributes = {})
-      attrs = Cloudflare::Types::DnsZoneTransfersOutgoingAttributes.new(attributes)
-      resource(:cloudflare_dns_zone_transfers_outgoing, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_dns_zone_transfers_outgoing',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_dns_zone_transfers_outgoing.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_dns_zone_transfers_outgoing,
+      attributes_class: Cloudflare::Types::DnsZoneTransfersOutgoingAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareDnsZoneTransfersOutgoing

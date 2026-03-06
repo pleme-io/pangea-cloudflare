@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZoneLockdown
-    def cloudflare_zone_lockdown(name, attributes = {})
-      attrs = Cloudflare::Types::ZoneLockdownAttributes.new(attributes)
-      resource(:cloudflare_zone_lockdown, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zone_lockdown',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zone_lockdown.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zone_lockdown,
+      attributes_class: Cloudflare::Types::ZoneLockdownAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareZoneLockdown

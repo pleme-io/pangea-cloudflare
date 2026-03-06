@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareCustomPages
-    def cloudflare_custom_pages(name, attributes = {})
-      attrs = Cloudflare::Types::CustomPagesAttributes.new(attributes)
-      resource(:cloudflare_custom_pages, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_custom_pages',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_custom_pages.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_custom_pages,
+      attributes_class: Cloudflare::Types::CustomPagesAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareCustomPages

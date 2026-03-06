@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareMagicTransitConnector
-    def cloudflare_magic_transit_connector(name, attributes = {})
-      attrs = Cloudflare::Types::MagicTransitConnectorAttributes.new(attributes)
-      resource(:cloudflare_magic_transit_connector, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_magic_transit_connector',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_magic_transit_connector.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_magic_transit_connector,
+      attributes_class: Cloudflare::Types::MagicTransitConnectorAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareMagicTransitConnector

@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareRegionalHostname
-    def cloudflare_regional_hostname(name, attributes = {})
-      attrs = Cloudflare::Types::RegionalHostnameAttributes.new(attributes)
-      resource(:cloudflare_regional_hostname, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_regional_hostname',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_regional_hostname.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_regional_hostname,
+      attributes_class: Cloudflare::Types::RegionalHostnameAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareRegionalHostname

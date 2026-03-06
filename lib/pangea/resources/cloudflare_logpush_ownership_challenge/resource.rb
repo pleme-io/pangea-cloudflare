@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareLogpushOwnershipChallenge
-    def cloudflare_logpush_ownership_challenge(name, attributes = {})
-      attrs = Cloudflare::Types::LogpushOwnershipChallengeAttributes.new(attributes)
-      resource(:cloudflare_logpush_ownership_challenge, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_logpush_ownership_challenge',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_logpush_ownership_challenge.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_logpush_ownership_challenge,
+      attributes_class: Cloudflare::Types::LogpushOwnershipChallengeAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareLogpushOwnershipChallenge

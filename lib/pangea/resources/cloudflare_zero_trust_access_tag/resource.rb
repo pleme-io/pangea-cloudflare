@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustAccessTag
-    def cloudflare_zero_trust_access_tag(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustAccessTagAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_access_tag, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_access_tag',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_access_tag.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_access_tag,
+      attributes_class: Cloudflare::Types::ZeroTrustAccessTagAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustAccessTag

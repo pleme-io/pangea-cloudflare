@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareLeakedCredentialCheckRule
-    def cloudflare_leaked_credential_check_rule(name, attributes = {})
-      attrs = Cloudflare::Types::LeakedCredentialCheckRuleAttributes.new(attributes)
-      resource(:cloudflare_leaked_credential_check_rule, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_leaked_credential_check_rule',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_leaked_credential_check_rule.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_leaked_credential_check_rule,
+      attributes_class: Cloudflare::Types::LeakedCredentialCheckRuleAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareLeakedCredentialCheckRule

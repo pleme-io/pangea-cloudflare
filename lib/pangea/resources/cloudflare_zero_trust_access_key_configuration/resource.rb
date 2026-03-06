@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustAccessKeyConfiguration
-    def cloudflare_zero_trust_access_key_configuration(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustAccessKeyConfigurationAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_access_key_configuration, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_access_key_configuration',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_access_key_configuration.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_access_key_configuration,
+      attributes_class: Cloudflare::Types::ZeroTrustAccessKeyConfigurationAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustAccessKeyConfiguration

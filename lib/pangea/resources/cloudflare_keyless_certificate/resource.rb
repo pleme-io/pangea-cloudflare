@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareKeylessCertificate
-    def cloudflare_keyless_certificate(name, attributes = {})
-      attrs = Cloudflare::Types::KeylessCertificateAttributes.new(attributes)
-      resource(:cloudflare_keyless_certificate, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_keyless_certificate',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_keyless_certificate.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_keyless_certificate,
+      attributes_class: Cloudflare::Types::KeylessCertificateAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareKeylessCertificate

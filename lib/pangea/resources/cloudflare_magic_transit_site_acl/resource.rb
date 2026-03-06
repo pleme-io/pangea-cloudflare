@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareMagicTransitSiteAcl
-    def cloudflare_magic_transit_site_acl(name, attributes = {})
-      attrs = Cloudflare::Types::MagicTransitSiteAclAttributes.new(attributes)
-      resource(:cloudflare_magic_transit_site_acl, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_magic_transit_site_acl',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_magic_transit_site_acl.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_magic_transit_site_acl,
+      attributes_class: Cloudflare::Types::MagicTransitSiteAclAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareMagicTransitSiteAcl

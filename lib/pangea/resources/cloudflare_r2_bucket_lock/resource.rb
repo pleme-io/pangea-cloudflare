@@ -6,21 +6,12 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareR2BucketLock
-    def cloudflare_r2_bucket_lock(name, attributes = {})
-      attrs = Cloudflare::Types::R2BucketLockAttributes.new(attributes)
-      resource(:cloudflare_r2_bucket_lock, name) do
-        account_id attrs.account_id
-        bucket_name attrs.bucket_name
-        enabled attrs.enabled
-        retention_period_days attrs.retention_period_days if attrs.retention_period_days
-      end
-      ResourceReference.new(
-        type: 'cloudflare_r2_bucket_lock',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_r2_bucket_lock.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_r2_bucket_lock,
+      attributes_class: Cloudflare::Types::R2BucketLockAttributes,
+      map: [:account_id, :bucket_name, :enabled],
+      map_present: [:retention_period_days]
   end
   module Cloudflare
     include CloudflareR2BucketLock

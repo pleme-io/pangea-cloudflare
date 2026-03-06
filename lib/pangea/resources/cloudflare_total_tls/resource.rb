@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareTotalTls
-    def cloudflare_total_tls(name, attributes = {})
-      attrs = Cloudflare::Types::TotalTlsAttributes.new(attributes)
-      resource(:cloudflare_total_tls, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_total_tls',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_total_tls.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_total_tls,
+      attributes_class: Cloudflare::Types::TotalTlsAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareTotalTls

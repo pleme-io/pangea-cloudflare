@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareR2ManagedDomain
-    def cloudflare_r2_managed_domain(name, attributes = {})
-      attrs = Cloudflare::Types::R2ManagedDomainAttributes.new(attributes)
-      resource(:cloudflare_r2_managed_domain, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_r2_managed_domain',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_r2_managed_domain.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_r2_managed_domain,
+      attributes_class: Cloudflare::Types::R2ManagedDomainAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareR2ManagedDomain

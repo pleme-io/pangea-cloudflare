@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustGatewayProxyEndpoint
-    def cloudflare_zero_trust_gateway_proxy_endpoint(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustGatewayProxyEndpointAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_gateway_proxy_endpoint, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_gateway_proxy_endpoint',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_gateway_proxy_endpoint.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_gateway_proxy_endpoint,
+      attributes_class: Cloudflare::Types::ZeroTrustGatewayProxyEndpointAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustGatewayProxyEndpoint

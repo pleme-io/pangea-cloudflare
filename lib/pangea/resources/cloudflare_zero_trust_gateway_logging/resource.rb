@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustGatewayLogging
-    def cloudflare_zero_trust_gateway_logging(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustGatewayLoggingAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_gateway_logging, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_gateway_logging',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_gateway_logging.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_gateway_logging,
+      attributes_class: Cloudflare::Types::ZeroTrustGatewayLoggingAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustGatewayLogging

@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareDnsFirewall
-    def cloudflare_dns_firewall(name, attributes = {})
-      attrs = Cloudflare::Types::DnsFirewallAttributes.new(attributes)
-      resource(:cloudflare_dns_firewall, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_dns_firewall',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_dns_firewall.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_dns_firewall,
+      attributes_class: Cloudflare::Types::DnsFirewallAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareDnsFirewall

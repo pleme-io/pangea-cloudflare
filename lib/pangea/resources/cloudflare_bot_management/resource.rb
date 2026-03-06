@@ -6,23 +6,12 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareBotManagement
-    def cloudflare_bot_management(name, attributes = {})
-      attrs = Cloudflare::Types::BotManagementAttributes.new(attributes)
-      resource(:cloudflare_bot_management, name) do
-        zone_id attrs.zone_id
-        enable_js attrs.enable_js if !attrs.enable_js.nil?
-        fight_mode attrs.fight_mode if !attrs.fight_mode.nil?
-        suppress_session_score attrs.suppress_session_score if !attrs.suppress_session_score.nil?
-        auto_update_model attrs.auto_update_model if !attrs.auto_update_model.nil?
-        optimize_wordpress attrs.optimize_wordpress if !attrs.optimize_wordpress.nil?
-      end
-      ResourceReference.new(
-        type: 'cloudflare_bot_management',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_bot_management.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_bot_management,
+      attributes_class: Cloudflare::Types::BotManagementAttributes,
+      map: [:zone_id],
+      map_bool: [:enable_js, :fight_mode, :suppress_session_score, :auto_update_model, :optimize_wordpress]
   end
   module Cloudflare
     include CloudflareBotManagement

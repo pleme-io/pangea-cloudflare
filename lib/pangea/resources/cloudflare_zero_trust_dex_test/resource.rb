@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustDexTest
-    def cloudflare_zero_trust_dex_test(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDexTestAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_dex_test, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_dex_test',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_dex_test.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_dex_test,
+      attributes_class: Cloudflare::Types::ZeroTrustDexTestAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustDexTest

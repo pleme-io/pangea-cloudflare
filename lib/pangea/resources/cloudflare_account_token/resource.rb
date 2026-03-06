@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareAccountToken
-    def cloudflare_account_token(name, attributes = {})
-      attrs = Cloudflare::Types::AccountTokenAttributes.new(attributes)
-      resource(:cloudflare_account_token, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_account_token',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_account_token.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_account_token,
+      attributes_class: Cloudflare::Types::AccountTokenAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareAccountToken

@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareEmailSecurityImpersonationRegistry
-    def cloudflare_email_security_impersonation_registry(name, attributes = {})
-      attrs = Cloudflare::Types::EmailSecurityImpersonationRegistryAttributes.new(attributes)
-      resource(:cloudflare_email_security_impersonation_registry, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_email_security_impersonation_registry',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_email_security_impersonation_registry.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_email_security_impersonation_registry,
+      attributes_class: Cloudflare::Types::EmailSecurityImpersonationRegistryAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareEmailSecurityImpersonationRegistry

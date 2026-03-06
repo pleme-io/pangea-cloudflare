@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareRegistrarDomain
-    def cloudflare_registrar_domain(name, attributes = {})
-      attrs = Cloudflare::Types::RegistrarDomainAttributes.new(attributes)
-      resource(:cloudflare_registrar_domain, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_registrar_domain',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_registrar_domain.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_registrar_domain,
+      attributes_class: Cloudflare::Types::RegistrarDomainAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareRegistrarDomain

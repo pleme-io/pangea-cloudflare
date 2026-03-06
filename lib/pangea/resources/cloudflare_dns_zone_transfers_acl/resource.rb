@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareDnsZoneTransfersAcl
-    def cloudflare_dns_zone_transfers_acl(name, attributes = {})
-      attrs = Cloudflare::Types::DnsZoneTransfersAclAttributes.new(attributes)
-      resource(:cloudflare_dns_zone_transfers_acl, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_dns_zone_transfers_acl',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_dns_zone_transfers_acl.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_dns_zone_transfers_acl,
+      attributes_class: Cloudflare::Types::DnsZoneTransfersAclAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareDnsZoneTransfersAcl

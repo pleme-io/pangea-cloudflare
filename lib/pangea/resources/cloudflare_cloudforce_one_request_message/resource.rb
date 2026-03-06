@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareCloudforceOneRequestMessage
-    def cloudflare_cloudforce_one_request_message(name, attributes = {})
-      attrs = Cloudflare::Types::CloudforceOneRequestMessageAttributes.new(attributes)
-      resource(:cloudflare_cloudforce_one_request_message, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_cloudforce_one_request_message',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_cloudforce_one_request_message.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_cloudforce_one_request_message,
+      attributes_class: Cloudflare::Types::CloudforceOneRequestMessageAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareCloudforceOneRequestMessage

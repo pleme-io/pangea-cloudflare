@@ -6,20 +6,13 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareAccount
-    def cloudflare_account(name, attributes = {})
-      attrs = Cloudflare::Types::AccountAttributes.new(attributes)
-      resource(:cloudflare_account, name) do
-        name attrs.name
-        type attrs.type if attrs.type
-        enforce_twofactor attrs.enforce_twofactor if !attrs.enforce_twofactor.nil?
-      end
-      ResourceReference.new(
-        type: 'cloudflare_account',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_account.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_account,
+      attributes_class: Cloudflare::Types::AccountAttributes,
+      map: [:name],
+      map_present: [:type],
+      map_bool: [:enforce_twofactor]
   end
   module Cloudflare
     include CloudflareAccount

@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustAccessCustomPage
-    def cloudflare_zero_trust_access_custom_page(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustAccessCustomPageAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_access_custom_page, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_access_custom_page',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_access_custom_page.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_access_custom_page,
+      attributes_class: Cloudflare::Types::ZeroTrustAccessCustomPageAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustAccessCustomPage

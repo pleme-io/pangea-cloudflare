@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustGatewayCertificate
-    def cloudflare_zero_trust_gateway_certificate(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustGatewayCertificateAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_gateway_certificate, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_gateway_certificate',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_gateway_certificate.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_gateway_certificate,
+      attributes_class: Cloudflare::Types::ZeroTrustGatewayCertificateAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustGatewayCertificate

@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareSnippet
-    def cloudflare_snippet(name, attributes = {})
-      attrs = Cloudflare::Types::SnippetAttributes.new(attributes)
-      resource(:cloudflare_snippet, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_snippet',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_snippet.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_snippet,
+      attributes_class: Cloudflare::Types::SnippetAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareSnippet

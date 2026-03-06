@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareEmailRoutingDns
-    def cloudflare_email_routing_dns(name, attributes = {})
-      attrs = Cloudflare::Types::EmailRoutingDnsAttributes.new(attributes)
-      resource(:cloudflare_email_routing_dns, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_email_routing_dns',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_email_routing_dns.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_email_routing_dns,
+      attributes_class: Cloudflare::Types::EmailRoutingDnsAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareEmailRoutingDns

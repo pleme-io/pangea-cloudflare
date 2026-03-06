@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareDeviceCustomProfileLocalDomainFallback
-    def cloudflare_zero_trust_device_custom_profile_local_domain_fallback(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustDeviceCustomProfileLocalDomainFallbackAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_device_custom_profile_local_domain_fallback, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_device_custom_profile_local_domain_fallback',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_device_custom_profile_local_domain_fallback.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_device_custom_profile_local_domain_fallback,
+      attributes_class: Cloudflare::Types::ZeroTrustDeviceCustomProfileLocalDomainFallbackAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareDeviceCustomProfileLocalDomainFallback

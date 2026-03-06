@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareDnsZoneTransfersPeer
-    def cloudflare_dns_zone_transfers_peer(name, attributes = {})
-      attrs = Cloudflare::Types::DnsZoneTransfersPeerAttributes.new(attributes)
-      resource(:cloudflare_dns_zone_transfers_peer, name) do
-        zone_id attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_dns_zone_transfers_peer',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_dns_zone_transfers_peer.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_dns_zone_transfers_peer,
+      attributes_class: Cloudflare::Types::DnsZoneTransfersPeerAttributes,
+      map: [:zone_id]
   end
   module Cloudflare
     include CloudflareDnsZoneTransfersPeer

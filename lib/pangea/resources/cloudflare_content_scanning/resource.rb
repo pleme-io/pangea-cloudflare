@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareContentScanning
-    def cloudflare_content_scanning(name, attributes = {})
-      attrs = Cloudflare::Types::ContentScanningAttributes.new(attributes)
-      resource(:cloudflare_content_scanning, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_content_scanning',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_content_scanning.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_content_scanning,
+      attributes_class: Cloudflare::Types::ContentScanningAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareContentScanning

@@ -6,18 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareZeroTrustAccessMtlsCertificate
-    def cloudflare_zero_trust_access_mtls_certificate(name, attributes = {})
-      attrs = Cloudflare::Types::ZeroTrustAccessMtlsCertificateAttributes.new(attributes)
-      resource(:cloudflare_zero_trust_access_mtls_certificate, name) do
-        account_id attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_zero_trust_access_mtls_certificate',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_zero_trust_access_mtls_certificate.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_zero_trust_access_mtls_certificate,
+      attributes_class: Cloudflare::Types::ZeroTrustAccessMtlsCertificateAttributes,
+      map: [:account_id]
   end
   module Cloudflare
     include CloudflareZeroTrustAccessMtlsCertificate

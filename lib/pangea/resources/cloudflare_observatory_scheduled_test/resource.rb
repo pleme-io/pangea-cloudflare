@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareObservatoryScheduledTest
-    def cloudflare_observatory_scheduled_test(name, attributes = {})
-      attrs = Cloudflare::Types::ObservatoryScheduledTestAttributes.new(attributes)
-      resource(:cloudflare_observatory_scheduled_test, name) do
-        zone_id attrs.zone_id if attrs.zone_id
-        account_id attrs.account_id if attrs.account_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_observatory_scheduled_test',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_observatory_scheduled_test.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_observatory_scheduled_test,
+      attributes_class: Cloudflare::Types::ObservatoryScheduledTestAttributes,
+      map_present: [:zone_id, :account_id]
   end
   module Cloudflare
     include CloudflareObservatoryScheduledTest

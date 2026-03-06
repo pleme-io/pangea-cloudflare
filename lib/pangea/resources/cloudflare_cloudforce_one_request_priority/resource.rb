@@ -6,19 +6,11 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareCloudforceOneRequestPriority
-    def cloudflare_cloudforce_one_request_priority(name, attributes = {})
-      attrs = Cloudflare::Types::CloudforceOneRequestPriorityAttributes.new(attributes)
-      resource(:cloudflare_cloudforce_one_request_priority, name) do
-        account_id attrs.account_id if attrs.account_id
-        zone_id attrs.zone_id if attrs.zone_id
-      end
-      ResourceReference.new(
-        type: 'cloudflare_cloudforce_one_request_priority',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_cloudforce_one_request_priority.\#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_cloudforce_one_request_priority,
+      attributes_class: Cloudflare::Types::CloudforceOneRequestPriorityAttributes,
+      map_present: [:account_id, :zone_id]
   end
   module Cloudflare
     include CloudflareCloudforceOneRequestPriority

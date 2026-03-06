@@ -6,21 +6,12 @@ require 'pangea/resource_registry'
 
 module Pangea::Resources
   module CloudflareAccountMember
-    def cloudflare_account_member(name, attributes = {})
-      attrs = Cloudflare::Types::AccountMemberAttributes.new(attributes)
-      resource(:cloudflare_account_member, name) do
-        account_id attrs.account_id
-        email_address attrs.email_address
-        role_ids attrs.role_ids
-        status attrs.status if attrs.status
-      end
-      ResourceReference.new(
-        type: 'cloudflare_account_member',
-        name: name,
-        resource_attributes: attrs.to_h,
-        outputs: { id: "${cloudflare_account_member.#{name}.id}" }
-      )
-    end
+    include Pangea::Resources::ResourceBuilder
+
+    define_resource :cloudflare_account_member,
+      attributes_class: Cloudflare::Types::AccountMemberAttributes,
+      map: [:account_id, :email_address, :role_ids],
+      map_present: [:status]
   end
   module Cloudflare
     include CloudflareAccountMember
