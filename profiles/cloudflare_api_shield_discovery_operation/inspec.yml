@@ -1,0 +1,8 @@
+name: cloudflare_api_shield_discovery_operation
+title: Manages a cloudflare_api_shield_discovery_operation resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

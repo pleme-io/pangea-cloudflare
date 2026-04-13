@@ -1,0 +1,8 @@
+name: cloudflare_stream_watermark
+title: Manages a cloudflare_stream_watermark resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

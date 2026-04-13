@@ -1,0 +1,8 @@
+name: cloudflare_zero_trust_access_ai_controls_mcp_portal
+title: Manages a cloudflare_zero_trust_access_ai_controls_mcp_portal resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

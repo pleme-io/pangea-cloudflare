@@ -1,0 +1,8 @@
+name: cloudflare_authenticated_origin_pulls_hostname_certificate
+title: Manages a cloudflare_authenticated_origin_pulls_hostname_certificate resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

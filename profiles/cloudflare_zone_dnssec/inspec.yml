@@ -1,0 +1,8 @@
+name: cloudflare_zone_dnssec
+title: Manages a cloudflare_zone_dnssec resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

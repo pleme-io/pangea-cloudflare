@@ -1,0 +1,8 @@
+name: cloudflare_ruleset
+title: Manages a cloudflare_ruleset resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

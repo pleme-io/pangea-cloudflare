@@ -1,0 +1,8 @@
+name: cloudflare_zero_trust_dlp_predefined_profile
+title: Manages a cloudflare_zero_trust_dlp_predefined_profile resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

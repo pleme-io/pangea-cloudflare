@@ -1,0 +1,8 @@
+name: cloudflare_dns_zone_transfers_incoming
+title: Manages a cloudflare_dns_zone_transfers_incoming resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

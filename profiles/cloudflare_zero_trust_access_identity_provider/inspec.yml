@@ -1,0 +1,8 @@
+name: cloudflare_zero_trust_access_identity_provider
+title: Manages a cloudflare_zero_trust_access_identity_provider resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

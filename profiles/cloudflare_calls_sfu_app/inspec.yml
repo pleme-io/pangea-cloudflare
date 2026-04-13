@@ -1,0 +1,8 @@
+name: cloudflare_calls_sfu_app
+title: Manages a cloudflare_calls_sfu_app resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare

@@ -1,0 +1,8 @@
+name: cloudflare_workers_script
+title: Manages a cloudflare_workers_script resource
+version: 0.1.0
+supports:
+  - platform: cloudflare
+depends:
+  - name: inspec-cloudflare
+    url: https://github.com/pleme-io/inspec-cloudflare
